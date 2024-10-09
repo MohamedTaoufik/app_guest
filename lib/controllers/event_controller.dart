@@ -53,6 +53,8 @@ class EventController extends GetxController {
     );
 
   final formKey = GlobalKey<FormState>();
+    final formKeyUpdate = GlobalKey<FormState>();
+
   TextEditingController nomEvent = TextEditingController();
 
   late List<String?> listPhotoUsers;
@@ -486,7 +488,6 @@ class EventController extends GetxController {
   }
 
   updateEvent() async {
-    print("galleries ==============$eventGalleries");
     var data = dio_.FormData.fromMap({
       'files': files,
       'event_name': nomEvent.text.trim(),

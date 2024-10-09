@@ -11,7 +11,8 @@ import 'package:get/get.dart';
 
 class NewPasswordScreen extends StatefulWidget {
   final String? title;
-  const NewPasswordScreen({super.key, this.title});
+  final String? code;
+  const NewPasswordScreen({super.key, this.title, this.code});
 
   @override
   State<NewPasswordScreen> createState() => _NewPasswordScreenState();
@@ -127,7 +128,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       print('valide');
-                      profileController.updatePassword(context);
+                      profileController.verifyCode(context,widget.code! );
                     }
                     // validateThenDoLogin(context);
                   },

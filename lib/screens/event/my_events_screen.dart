@@ -179,7 +179,7 @@ class MyEventsScreen extends GetView<EventController> {
                                         child: SlidableAction(
                                           onPressed: (BuildContext context) {
                                             print(
-                                                "image===============event${controller.allEventModelByUser!.data![index].eventGalleries!}>");
+                                                'click update---------------------------------');
                                             AppStorage.saveIdEvent(controller
                                                 .allEventModelByUser!
                                                 .data![index]
@@ -453,6 +453,7 @@ class MyEventsScreen extends GetView<EventController> {
                       const SizedBox(
                         height: 10,
                       ),
+                      //---------------------------------------------------------declaration type event----------------------------------------------------------
                       GetBuilder<EventController>(
                         builder: (controller) {
                           return CustomDropDowButton(
@@ -464,6 +465,8 @@ class MyEventsScreen extends GetView<EventController> {
                           );
                         },
                       ),
+                      //---------------------------------------------------------declaration type event----------------------------------------------------------
+
                       const SizedBox(
                         height: 10,
                       ),

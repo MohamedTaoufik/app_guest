@@ -49,6 +49,15 @@ class ProfileController extends GetxController {
   TextEditingController? newPassworsController = TextEditingController();
 
   bool isVisible = true;
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    keyForm.currentState?.reset();
+    keyFormForgot.currentState?.reset();
+    keyFormVeify.currentState?.reset();
+
+    keyFormNewP.currentState?.reset();
+  }
 
   void showPassword() {
     isVisible = !isVisible;
@@ -183,7 +192,8 @@ class ProfileController extends GetxController {
         // 'user_martial_status': selectedValueMaritalStatus,
         'user_email': emailController.text.trim(),
         'user_password': passworsController!.text.trim(),
-        'role': 'membres'
+        'role': 'membres',
+        "fcmToken": AppStorage.readFcmToken()
       };
 
       var response = await dio.request(
@@ -348,29 +358,20 @@ class ProfileController extends GetxController {
   }
 
   GetUser? getUser;
-  verifyCode(BuildContext context) async {
+  verifyCode(BuildContext context, String code) async {
     try {
       print('---------------------------verify-------------------');
-
-      var response = await dio.request(
-        '${AppApi.verifyCodeUrl}${code1Controller.text}${code2Controller.text}${code3Controller.text}${code4Controller.text}${code5Controller.text}${code6Controller.text}',
-        options: Options(
-          method: 'GET',
-        ),
+      Map<String, dynamic> data = {"newPassword": newPassworsController!.text};
+      var response = await dio.post(
+        '${AppApi.verifyCodeUrl}$code',
+        data: data,
       );
-      print(
-          "get--------------------------------${AppApi.verifyCodeUrl}${code1Controller.text}${code2Controller.text}${code3Controller.text}${code4Controller.text}${code5Controller.text}${code6Controller.text}------");
-      if (response.statusCode == 200) {
-        getUser = GetUser.fromJson(response.data);
-        AppStorage.saveId(getUser!.data!.sId);
+
+      if (response.statusCode == 201) {
+        //   getUser = GetUser.fromJson(response.data);
+        //   AppStorage.saveId(getUser!.data!.sId);
         print("verify code ------------------- ${response}---------");
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const NewPasswordScreen(
-              title: "Forgot Password ",
-            ),
-          ),
-        );
+        Get.to(LoginScreen());
       }
     } catch (e) {
       // ScaffoldMessenger.of(context).showSnackBar(

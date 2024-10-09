@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class EventCommentsScreen extends GetView<EventController> {
   final String? idEvent;
@@ -38,97 +39,123 @@ class EventCommentsScreen extends GetView<EventController> {
       body: SingleChildScrollView(
         controller: controller.scrollController,
         child: SizedBox(
-          child:GetBuilder<EventController>(
-                    builder: (c) => FutureBuilder(
-            future: controller.getAlCommentsByEvent(idEvent),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (snapshot.hasData) {
-                if (snapshot.data!.data!.isNotEmpty) {
-                  return GetBuilder<EventController>(
-                    builder: (c) => ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: c.allCommentsByEventModel!.data!.length,
-                      itemBuilder: (context, index) => ListTile(
-                        leading: c.allCommentsByEventModel!.data![index].userId!
-                                    .userProfilePhoto !=
-                                null
-                            ? CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    "${AppApi.getImageUsersUrl}${c.allCommentsByEventModel!.data![index].userId!.userProfilePhoto!}"),
-                              )
-                            : const Icon(Icons
-                                .person), // icône par défaut si pas d'image
+          child: GetBuilder<EventController>(
+            builder: (c) => FutureBuilder(
+              future: controller.getAlCommentsByEvent(idEvent),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasData) {
+                  if (snapshot.data!.data!.isNotEmpty) {
+                    return GetBuilder<EventController>(
+                      builder: (c) => ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: c.allCommentsByEventModel!.data!.length,
+                        itemBuilder: (context, index) => ListTile(
+                          leading: c.allCommentsByEventModel!.data![index]
+                                      .userId!.userProfilePhoto !=
+                                  null
+                              ? CircleAvatar(
+                                
+                                  backgroundImage: NetworkImage(
+                                      "${AppApi.getImageUsersUrl}${c.allCommentsByEventModel!.data![index].userId!.userProfilePhoto!}"),
+                                )
+                              : const Icon(Icons
+                                  .person), // icône par défaut si pas d'image
 
-                        subtitle: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(15.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 3,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 16.0),
-                          padding: const EdgeInsets.all(6.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(c.allCommentsByEventModel!.data![index]
-                                  .userId!.userFirstName!),
-                              const SizedBox(height: 5),
-                              Text(c.allCommentsByEventModel!.data![index]
-                                  .commentMessageContext!),
-                              const SizedBox(height: 5),
-                            ],
+                          subtitle: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                             // border: Border.all(color: Colors.grey, width: 2),
+                              borderRadius: BorderRadius.circular(15.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 2,
+                                  blurRadius: 3,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 16.0),
+                            padding: const EdgeInsets.all(6.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  c.allCommentsByEventModel!.data![index]
+                                      .userId!.userFirstName!,
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(c.allCommentsByEventModel!.data![index]
+                                    .commentMessageContext!),
+                                const SizedBox(height: 5),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    DateFormat('dd-MM-yyyy HH:mm:ss').format(
+                                        DateTime.parse(c
+                                            .allCommentsByEventModel!
+                                            .data![index]
+                                            .createdAt!)),
+                                    style: TextStyle(
+                                        color: Colors.green,
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: 14),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                } else {
-                  return Center(
-                    child: Column(
-                      children: [
-                        Image.asset("assets/images/no_data.jpg"),
-                        const Text(
-                          'Créer votre premiére comment.',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ],
-                    ),
-                  );
+                    );
+                  } else {
+                    return Center(
+                      child: Column(
+                        children: [
+                          Image.asset("assets/images/no_data.jpg"),
+                          const Text(
+                            'Créer votre premiére comment.',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                 }
-              }
-              return Center(
-                child: Column(
-                  children: [
-                    Image.asset("assets/images/no_data.jpg"),
-                    const Text(
-                      'Créer votre premiére comment.',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ],
-                ),
-              );
-            },
+                return Center(
+                  child: Column(
+                    children: [
+                      Image.asset("assets/images/no_data.jpg"),
+                      const Text(
+                        'Créer votre premiére comment.',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
-        ),),
+        ),
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(15.0),
         child: GetBuilder<EventController>(
           builder: (con) {
             return TextFormField(
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(256), // Limit to 10 characters
+              ],
               focusNode: controller.focusNode,
               decoration: InputDecoration(
 

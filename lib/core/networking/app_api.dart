@@ -20,6 +20,6 @@ class AppApi {
   static const String getUserEmailUrl = "${baseUrl}users/find/";
   static const String sendNotificationUrl = "${baseUrl}notifications/";
 
-  static const String verifyCodeUrl = "${baseUrl}users/verifyCode/";
+  static const String verifyCodeUrl = "${baseUrl}users/reset-password/";
   static const String logOutUrl = "${baseUrl}authentification/logout";
 }

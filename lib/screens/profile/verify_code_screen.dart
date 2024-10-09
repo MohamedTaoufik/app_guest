@@ -1,7 +1,7 @@
-
 import 'package:app_guest/controllers/profile_controller.dart';
 import 'package:app_guest/core/components/profile/app_button.dart';
 import 'package:app_guest/core/components/profile/app_text_form_field.dart';
+import 'package:app_guest/screens/profile/new_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -189,8 +189,14 @@ class VerifyCodeScreen extends GetView<ProfileController> {
                   text: "Verify",
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      print('valide');
-                      controller.verifyCode(context);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>  NewPasswordScreen(
+                            title: "Forgot Password ",
+                            code: "${ controller.code1Controller.text}${controller.code2Controller.text}${controller.code3Controller.text}${controller.code4Controller.text}${controller.code5Controller.text}${controller.code6Controller.text}",
+                          ),
+                        ),
+                      );
                     }
                     // validateThenDoLogin(context);
                   },
