@@ -251,9 +251,20 @@ class ProfileController extends GetxController {
         AppStorage.saveToken(loginUserModel!.tokens!.accessToken.toString());
         emailController.clear();
         passworsController!.clear();
-        getMembre(context);
-        Get.to(HomeScreen());
-      } else if (response.statusCode == 400) {
+        getMembre();
+        Get.off(HomeScreen());
+      } else if (response.statusCode == 400 &&
+          response.statusMessage == "Password is incorrect") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.grey[200],
+            content: const Text(
+              "Password is incorrect",
+              style: TextStyle(color: Colors.blue),
+            ),
+          ),
+        );
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.grey[200],
@@ -263,8 +274,6 @@ class ProfileController extends GetxController {
             ),
           ),
         );
-      } else {
-        print(response.statusMessage);
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -327,7 +336,7 @@ class ProfileController extends GetxController {
   }
 
   TextEditingController selectedDateEditProfile = TextEditingController();
-  getMembre(BuildContext context) async {
+  getMembre() async {
     try {
       print('---------------------------get-------------------');
 
@@ -415,7 +424,6 @@ class ProfileController extends GetxController {
   //   }
   updateUser() async {
     try {
-      print('---------------------------update---------$image----------');
       var data = di.FormData.fromMap({
         "file": await di.MultipartFile.fromFile(
           image!.path,
@@ -456,6 +464,8 @@ class ProfileController extends GetxController {
       if (response.statusCode == 200) {
         print("update success=====================${response.data}");
         userMembreModel!.userProfilePhoto = "";
+        getMembre();
+        Get.to(HomeScreen());
         // photoUserController.clear();
         // Get.showSnackbar(
         //   GetSnackBar(

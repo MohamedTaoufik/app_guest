@@ -279,7 +279,7 @@ class UpdateEventScreen extends GetView<EventController> {
                 AppTextButton(
                   text: "Update",
                   onPressed: () {
-                    print('valide----------------------------');
+                    print('update eventslide----------------------------');
                     // if (controller.formKeyUpdate.currentState!.validate()) {
                     //   print('valide------------------------------');
                     controller.updateEvent();

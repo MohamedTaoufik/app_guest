@@ -14,7 +14,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-
 import 'package:dio/dio.dart';
 import 'package:dio/dio.dart' as dio_;
 import 'package:flutter/material.dart';
@@ -53,7 +52,7 @@ class EventController extends GetxController {
     );
 
   final formKey = GlobalKey<FormState>();
-    final formKeyUpdate = GlobalKey<FormState>();
+  final formKeyUpdate = GlobalKey<FormState>();
 
   TextEditingController nomEvent = TextEditingController();
 
@@ -515,6 +514,8 @@ class EventController extends GetxController {
 
       if (response.statusCode == 200) {
         print("response===========================>${response.data}");
+      getAllEventByUser();
+        Get.back();
         // formKey.currentState!.reset();
         // nomEvent.clear();
         // placeEvent.clear();

@@ -5,6 +5,10 @@ import 'package:app_guest/core/storage/app_storage.dart';
 import 'package:app_guest/core/theming/app_colors.dart';
 import 'package:app_guest/screens/event/my_events_screen.dart';
 import 'package:app_guest/screens/notifications_screen.dart';
+import 'package:app_guest/screens/profile/edit_profile_screen.dart';
+import 'package:app_guest/screens/profile/new_password_screen.dart';
+import 'package:app_guest/screens/profile/update_password_screen.dart';
+import 'package:app_guest/screens/settings_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,7 +26,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    profileController.getMembre(context);
+    profileController.getMembre();
     return Drawer(
       child: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -88,14 +92,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               children: [
                                 verticalSpace(20),
                                 Text(
-                                  '${AppStorage.readName()}', // Afficher dynamiquement le nom d'utilisateur
+                                  '${profileController.firstNameController.text}${profileController.lastNameController.text}', // Afficher dynamiquement le nom d'utilisateur
                                   style: const TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
                                 Text(
-                                  '${AppStorage.readEmail()}', // Afficher dynamiquement l'e-mail
+                                  '${profileController.emailController.text}', // Afficher dynamiquement l'e-mail
                                   style: TextStyle(
                                     fontSize: 14.0,
                                     color: Colors.grey[600],
@@ -104,10 +108,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               ],
                             ),
                           ),
-                      
-                      
-                      
-                      
                         ],
                       ),
                     ),
@@ -119,12 +119,61 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         Get.to(MyEventsScreen());
                       },
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     ListTile(
                       onTap: () {
                         Get.to(NotificationScreen());
                       },
-                      leading: Icon(Icons.notification_add_outlined,),
-                      title:Text( "My Notifications",),
+                      leading: Icon(
+                        Icons.notification_add_outlined,
+                      ),
+                      title: Text(
+                        "My Notifications",
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    ListTile(
+                      onTap: () {
+                        Get.to(EditProfileScreen());
+                      },
+                      leading: Icon(
+                        Icons.person,
+                      ),
+                      title: Text(
+                        "My profile",
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    ListTile(
+                      onTap: () {
+                        Get.to(UpdatePasswordScreen());
+                      },
+                      leading: Icon(
+                        Icons.password,
+                      ),
+                      title: Text(
+                        "Update password",
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    ListTile(
+                      onTap: () {
+                        Get.to(SettingsScreen());
+                      },
+                      leading: Icon(
+                        Icons.settings,
+                      ),
+                      title: Text(
+                        "Settings",
+                      ),
                     ),
                   ],
                 ),
